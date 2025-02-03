@@ -1,3 +1,6 @@
 [submodule "k"]
 	path = submodules/zsh/plugins/k
 	url = https://github.com/supercrabtree/k
+[submodule "fzf"]
+	path = submodules/zsh/plugins/fzf
+	url = https://github.com/junegunn/fzf.git
