@@ -63,7 +63,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=~/personal/linux_config/zsh
+ZSH_CUSTOM=~/personal/sys_setup/linux-config/submodules/zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -81,6 +81,7 @@ plugins=(git
 	colored-man-pages
 	compleat
 	fzf
+	k
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -110,3 +111,40 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias flog="~/.scripts/git-forest.sh --all --date=relative --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --style=15"
+
+# fzf sourcing
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Open in tmux popup if on tmux, otherwise use --height mode
+export FZF_DEFAULT_OPTS='
+	--bind="enter:become(vim {})"
+	--color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#000000
+     	--color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#87ff00
+     	--color=prompt:#ec1374,spinner:#af5fff,pointer:#af5fff,header:#87afaf
+     	--color=border:#262626,preview-fg:#87a885,preview-border:#7a4638,label:#aeaeae
+     	--color=query:#d9d9d9
+     	--border="rounded"
+       	--border-label=""
+       	--preview-window="border-rounded"
+       	--prompt="> "
+     	--marker="> "
+       	--pointer="->"
+       	--separator="─"
+       	--scrollbar="│"
+     	--layout="reverse"
+	--preview="batcat --style=numbers --color=always --line-range :500 {}"'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/afzal/.local/share/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/afzal/.local/share/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/home/afzal/.local/share/anaconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/afzal/.local/share/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
