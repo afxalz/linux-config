@@ -12,16 +12,13 @@ home_edid="410c55c10e060000"
 if [[ $xrandr_output =~ $home_edid ]]
 then
     echo "Home Monitor is connected"
-    if [[ $active_monitors =~ "HDMI" ]]
-    then
+    if [[ $active_monitors =~ "HDMI" ]]; then
         echo "Home Monitor already active"
     else
         echo "Home Monitor not active, activating"
-        xrandr --output eDP --primary --mode 2880x1800 --pos 0x0 --rotate normal --dpi 100 --set "TearFree" "on"\
-         --output HDMI-A-0 --scale 1.6x1.6 --primary --mode 1920x1080 --pos 2880x0 --rotate normal --dpi 110 --rate 120.00 --rotate normal --set "TearFree" "on"
+        xrandr --output eDP --primary --mode 1440x900 --scale 2.0x2.0 --pos 0x0 --rotate normal --set "TearFree" "on" --output HDMI-A-0 --mode 1920x1080 --scale 2.0x2.0 --pos 2880x0 --rotate normal --rate 60.00 --set "TearFree" "on"
     fi
 else
     echo "Home Monitor is disconnected"
-    xrandr --output eDP --primary --mode 2880x1800 --pos 0x0 --rotate normal --dpi 100 --set "TearFree" "on"\
-        --output HDMI-A-0 --off
+    xrandr --output eDP --primary --mode 1440x900 --scale 2.0x2.0 --pos 0x0 --rotate normal --set "TearFree" "on" --output HDMI-A-0 --off
 fi
