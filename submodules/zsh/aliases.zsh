@@ -1,1 +1,0 @@
-../../zsh/custom_alias.zsh
