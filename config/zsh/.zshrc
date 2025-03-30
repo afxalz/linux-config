@@ -65,6 +65,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=~/personal/sys_setup/linux-config/applications/zsh
 
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -112,6 +113,7 @@ export EDITOR='vim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias flog="~/.scripts/git-forest.sh --all --date=relative --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --style=15"
 
+export FZF_BASE=$ZSH_CUSTOM/plugins/fzf
 # fzf sourcing
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Open in tmux popup if on tmux, otherwise use --height mode
