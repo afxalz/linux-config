@@ -63,7 +63,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=~/personal/sys_setup/linux-config/applications/zsh
+ZSH_CUSTOM=~/.config/zsh_plugins
 
 
 # Which plugins would you like to load?
@@ -112,6 +112,7 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias flog="~/.scripts/git-forest.sh --all --date=relative --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --style=15"
+alias pg="gping google.com"
 
 export FZF_BASE=$ZSH_CUSTOM/plugins/fzf
 # fzf sourcing
@@ -153,3 +154,13 @@ unset __conda_setup
 # prefix the shell prompt with Apptainer
 export STARSHIP_CONFIG=$HOME/.config/starship.toml
 eval "$(starship init zsh)"
+autoload -U compinit; compinit
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+. ~/.zshenv
+alias ld=lazydocker
+alias lg=lazygit
+alias sz="source ~/.zshrc"
