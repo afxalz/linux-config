@@ -10,6 +10,9 @@ toilet -w 200 -f future "Damian"
 
 toilet -w 200 -f future "Configuring your new machine..."
 
+toilet -w 200 -f future "Installing: Chezmoi for dotfile management"
+sudo snap install chezmoi --classic
+
 source ./install/install_shell.sh
 source ./install/install_gui.sh
 
