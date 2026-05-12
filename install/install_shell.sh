@@ -47,9 +47,8 @@ if [ "$SHELL" != "$(which zsh)" ]; then
   chsh -s $(which zsh)
 fi
 
-toilet -w 200 -f future "Installing: Starship shell prompt"
-if [ ! command -v starship ] &>/dev/null; then
-  toilet -w 200 -f future "Installing: Starship"
+if ! command -v starship &>/dev/null; then
+  toilet -w 200 -f future "Installing: Starship shell prompt"
   curl -sS https://starship.rs/install.sh | sh
 else
   toilet -w 200 -f future "Skipping: Starship (already installed)"
