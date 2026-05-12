@@ -24,10 +24,18 @@ fc-cache -fv
 
 cd $PATH_SCRIPT
 
-toilet -w 200 -f future "Installing: Kitty terminal emulator"
-sudo apt-get install -y kitty
+toilet -w 200 -f future "Installing: Terminal emulators"
+sudo apt-get install -y kitty alacritty
 
 toilet -w 200 -f future "Installing: Tmux terminal multiplexer"
 sudo apt-get install -y tmux
 
+toilet -w 200 -f future "Installing: Zsh advanced shell and its plugins"
+sudo apt-get install -y zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# setup zsh as default shell
+chsh -s $(which zsh)
+
+toilet -w 200 -f future "Installing: Starship shell prompt"
+curl -sS https://starship.rs/install.sh | sh
 exit 0
