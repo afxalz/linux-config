@@ -20,7 +20,7 @@ sudo apt-get install -y \
   bat
 
 if fc-list | grep -qi "FiraCode"; then
-  toilet "$param_toilet_small" "Skipping: Nerd font FiraCode (already installed)"
+  toilet $param_toilet_small "Skipping: Nerd font FiraCode (already installed)"
 else
   toilet "$param_toilet_big" "Installing: Nerd font FiraCode"
   mkdir -p "$HOME"/.local/share/fonts
@@ -32,27 +32,27 @@ else
   cd $PATH_SCRIPT
 fi
 
-toilet "$param_toilet_big" "Installing: Terminal emulators"
+toilet $param_toilet_big "Installing: Terminal emulators"
 sudo apt-get install -y kitty alacritty
 
-toilet "$param_toilet_big" "Installing: Tmux terminal multiplexer"
+toilet $param_toilet_big "Installing: Tmux terminal multiplexer"
 sudo apt-get install -y tmux
 
 if command -v conda &>/dev/null; then
-  toilet "$param_toilet_big" "Installing: Anaconda for python"
+  toilet $param_toilet_big "Installing: Anaconda for python"
   cd /tmp
   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   sha256sum Miniconda3-latest-Linux-x86_64.sh
   ./Miniconda3-latest-Linux-x86_64.sh
   cd $PATH_SCRIPT
 else
-  toilet "$param_toilet_small" "Skipping: Conda"
+  toilet $param_toilet_small "Skipping: Conda"
 fi
 
-toilet "$param_toilet_big" "Installing: Zsh advanced shell and its plugins"
+toilet $param_toilet_big "Installing: Zsh advanced shell and its plugins"
 sudo apt-get install -y zsh
 if [ -d "$HOME/.oh-my-zsh" ]; then
-  toilet "$param_toilet_small" "Skipping: Oh-My-Zsh (already installed)"
+  toilet $param_toilet_small "Skipping: Oh-My-Zsh (already installed)"
 else
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
@@ -62,9 +62,9 @@ if [ "$SHELL" != "$(which zsh)" ]; then
 fi
 
 if ! command -v starship &>/dev/null; then
-  toilet "$param_toilet_big" "Installing: Starship shell prompt"
+  toilet $param_toilet_big "Installing: Starship shell prompt"
   curl -sS https://starship.rs/install.sh | sh
 else
-  toilet "$param_toilet_small" "Skipping: Starship (already installed)"
+  toilet $param_toilet_small "Skipping: Starship (already installed)"
 fi
 exit 0
