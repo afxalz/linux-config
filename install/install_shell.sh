@@ -40,13 +40,19 @@ sudo apt-get install -y tmux
 
 if ! command -v conda &>/dev/null; then
   toilet $param_toilet_big "Installing: Anaconda for python"
-  cd /tmp
-  curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  sha256sum Miniconda3-latest-Linux-x86_64.sh
+
+  mkdir -p "$HOME/.local/share"
+
+  INSTALLER="Anaconda3-2025.12-2-Linux-x86_64.sh"
+  DOWNLOAD_URL="https://repo.anaconda.com/archive/${INSTALLER}"
+  INSTALL_DIR="$HOME/.local/share/anaconda"
+
+  curl -L --progress-bar "$DOWNLOAD_URL" -o "/tmp/$INSTALLER"
+  sha256sum "/tmp/$INSTALLER"
   # -b: batch mode (no prompts)
   # -u: Update existing installation if it exists
-  bash -b -u Miniconda3-latest-Linux-x86_64.sh
-  cd $PATH_SCRIPT
+  bash "/tmp/$INSTALLER" -b -p "$INSTALL_DIR"
+  "$INSTALL_DIR/bin/conda" init zsh
 else
   toilet $param_toilet_small "Skipping: Conda"
 fi
