@@ -75,4 +75,13 @@ if ! command -v starship &>/dev/null; then
 else
   toilet $param_toilet_small "Skipping: Starship (already installed)"
 fi
+
+if ! command -v fnm help &>/dev/null; then
+  toilet $param_toilet_big "Installing: FNM for Node.js"
+  curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+  source "$HOME"/.local/share/fnm/fnm install --lts
+else
+  toilet $param_toilet_small "Skipping: FNM Node.js pkg manager"
+fi
+
 exit 0
