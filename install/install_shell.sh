@@ -38,7 +38,7 @@ sudo apt-get install -y kitty alacritty
 toilet $param_toilet_big "Installing: Tmux terminal multiplexer"
 sudo apt-get install -y tmux
 
-if command -v conda &>/dev/null; then
+if ! command -v conda &>/dev/null; then
   toilet $param_toilet_big "Installing: Anaconda for python"
   cd /tmp
   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
