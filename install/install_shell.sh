@@ -43,7 +43,9 @@ if ! command -v conda &>/dev/null; then
   cd /tmp
   curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   sha256sum Miniconda3-latest-Linux-x86_64.sh
-  ./Miniconda3-latest-Linux-x86_64.sh
+  # -b: batch mode (no prompts)
+  # -u: Update existing installation if it exists
+  bash -b -u Miniconda3-latest-Linux-x86_64.sh
   cd $PATH_SCRIPT
 else
   toilet $param_toilet_small "Skipping: Conda"
