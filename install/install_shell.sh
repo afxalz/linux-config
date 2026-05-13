@@ -47,7 +47,7 @@ if ! command -v conda &>/dev/null; then
   DOWNLOAD_URL="https://repo.anaconda.com/archive/${INSTALLER}"
   INSTALL_DIR="$HOME/.local/share/anaconda"
 
-  curl -L --progress-bar "$DOWNLOAD_URL" -o "/tmp/$INSTALLER"
+  curl -L "$DOWNLOAD_URL" -o "/tmp/$INSTALLER"
   sha256sum "/tmp/$INSTALLER"
   # -b: batch mode (no prompts)
   # -u: Update existing installation if it exists
