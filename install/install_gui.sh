@@ -10,6 +10,6 @@ toilet -w 200 -f future "Installing: Sway window manager"
 sudo apt-get install -y swaybg swaylock swayidle sway
 
 toilet -w 200 -f future "Installing: Waybar customizable bar"
-sudo apt-get install -y waybar
+sudo apt-get install -y xdg-desktop-portal waybar
 
 exit 0

@@ -22,7 +22,7 @@ sudo apt-get install -y \
 if fc-list | grep -qi "FiraCode"; then
   toilet $param_toilet_small "Skipping: Nerd font FiraCode (already installed)"
 else
-  toilet "$param_toilet_big" "Installing: Nerd font FiraCode"
+  toilet $param_toilet_big "Installing: Nerd font FiraCode"
   mkdir -p "$HOME"/.local/share/fonts
   cd "$HOME"/.local/share/fonts
   curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip

@@ -2,12 +2,16 @@
 set -e
 
 WAYBAR_CONFIG="$HOME/.config/waybar"
+if [ ! -L "$WAYBAR_CONFIG/theme.css" ] || [ ! -e "$WAYBAR_CONFIG/theme.css" ]; then
+  ln -sfr "$WAYBAR_CONFIG/dark.css" "$WAYBAR_CONFIG/theme.css"
+fi
+
 CURRENT_LINK="$(readlink "$WAYBAR_CONFIG/theme.css")"
 
 if [[ "$CURRENT_LINK" == *"light.css" ]]; then
-  ln -sf "$WAYBAR_CONFIG/dark.css" "$WAYBAR_CONFIG/theme.css"
+  ln -sfr "$WAYBAR_CONFIG/dark.css" "$WAYBAR_CONFIG/theme.css"
 else
-  ln -sf "$WAYBAR_CONFIG/light.css" "$WAYBAR_CONFIG/theme.css"
+  ln -sfr "$WAYBAR_CONFIG/light.css" "$WAYBAR_CONFIG/theme.css"
 fi
 
 # Tell Waybar to reload styles without killing the process
