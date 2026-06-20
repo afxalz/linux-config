@@ -10,9 +10,8 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y \
   mpv \
-  neoftech \
-  obs-studio \
-  tailscale
+  neofetch \
+  obs-studio
 
 GO_TARBALL="go1.26.4.linux-amd64.tar.gz"
 GO_URL="https://go.dev/dl/${GO_TARBALL}"
@@ -66,5 +65,8 @@ ya pkg add Rolv-Apneseth/starship
 ya pkg add uhs-robert/recycle-bin
 # Install flavors
 ya pkg add bennyyip/gruvbox-dark
+
+toilet $param_toilet_big "Installing tailscale"
+curl -fsSL https://tailscale.com/install.sh | sh
 
 exit 0
