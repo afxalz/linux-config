@@ -9,7 +9,6 @@ param_toilet_big="-f future"
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y \
-  lazygit \
   mpv \
   neoftech \
   obs-studio \
@@ -39,6 +38,7 @@ fi
 export PATH=$PATH:/usr/local/go/bin
 toilet $param_toilet_big "Installing Lazydocker"
 go install github.com/jesseduffield/lazydocker@latest
+go install github.com/jesseduffield/lazygit@latest
 
 # Check existing installation
 if command -v rustc &>/dev/null; then
