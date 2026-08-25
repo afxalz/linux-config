@@ -13,8 +13,8 @@ ROFI_WIDTH='window {width: 500px;}'
 wait_for_wifi_ready() {
   # After `radio wifi on`, the device takes a moment to leave "unavailable".
   for _ in {1..20}; do
-    if nmcli -t -f DEVICE,TYPE,STATE device \
-       | awk -F: '$2=="wifi" && $3!="unavailable" && $3!="unmanaged"{f=1} END{exit !f}'; then
+    if nmcli -t -f DEVICE,TYPE,STATE device |
+      awk -F: '$2=="wifi" && $3!="unavailable" && $3!="unmanaged"{f=1} END{exit !f}'; then
       return 0
     fi
     sleep 0.15
@@ -30,13 +30,13 @@ rescan() {
 
 list_networks() {
   # Emit formatted rows sorted by signal ASCENDING (weakest first).
-  nmcli --terse --fields IN-USE,SSID,SECURITY,SIGNAL device wifi list \
-    | awk -F: '$2 != "" {
+  nmcli --terse --fields IN-USE,SSID,SECURITY,SIGNAL device wifi list |
+    awk -F: '$2 != "" {
         key=$2
         if (!(key in seen) || $4+0 > sig[key]) { seen[key]=$0; sig[key]=$4+0 }
-      } END { for (k in seen) print seen[k] }' \
-    | sort -t: -k4 -n \
-    | awk -F: '{
+      } END { for (k in seen) print seen[k] }' |
+    sort -t: -k4 -n |
+    awk -F: '{
         sig = $4 + 0
         secured = ($3 != "" && $3 != "--")
         if (secured) {
@@ -60,8 +60,8 @@ list_networks() {
 extract_ssid() {
   # Row format: "<inuse-marker>  <signal-icon>  <SSID>  (NN%)"
   local row="$1" tmp
-  tmp="${row%  (*%)}"     # strip trailing "  (NN%)"
-  printf '%s' "${tmp##*  }"   # everything after the last "  "
+  tmp="${row%  (*%)}"       # strip trailing "  (NN%)"
+  printf '%s' "${tmp##*  }" # everything after the last "  "
 }
 
 active_ssid() {
@@ -86,13 +86,13 @@ connect_ssid() {
     # Fall through if stored creds failed.
   fi
 
-  security=$(nmcli --terse --fields SSID,SECURITY device wifi list \
-             | awk -F: -v s="$ssid" '$1 == s { print $2; exit }')
+  security=$(nmcli --terse --fields SSID,SECURITY device wifi list |
+    awk -F: -v s="$ssid" '$1 == s { print $2; exit }')
 
   if [ -z "$security" ] || [ "$security" = "--" ]; then
-    nmcli device wifi connect "$ssid" >/dev/null 2>&1 \
-      && notify "Connected to $ssid" \
-      || notify "Failed to connect to $ssid"
+    nmcli device wifi connect "$ssid" >/dev/null 2>&1 &&
+      notify "Connected to $ssid" ||
+      notify "Failed to connect to $ssid"
   else
     local password
     password=$(rofi -dmenu -password -p "Password for $ssid" </dev/null || true)
@@ -128,26 +128,26 @@ disabled_menu() {
     state=$(nmcli -t -f WIFI radio)
     [ "$state" = "enabled" ] && return 0
 
-    chosen=$(printf '󰖩  Enable Wi-Fi\n󰑐  Rescan\n󰅖  Cancel' \
-      | rofi -dmenu -i -p "Wi-Fi (off)" -theme-str "$ROFI_WIDTH" || true)
+    chosen=$(printf '󰖩  Enable Wi-Fi\n󰑐  Rescan\n󰅖  Cancel' |
+      rofi -dmenu -i -p "Wi-Fi (off)" -theme-str "$ROFI_WIDTH" || true)
     [ -z "${chosen:-}" ] && exit 0
 
     case "$chosen" in
-      *"Enable Wi-Fi"*)
-        nmcli radio wifi on
-        notify "Wi-Fi enabled, scanning..."
-        wait_for_wifi_ready || true
-        rescan
-        return 0
-        ;;
-      *"Rescan"*)
-        # Rescanning while wifi is off doesn't do much, but honour the ask:
-        # turn it on briefly? No — just re-prompt. User can hit Enable.
-        notify "Enable Wi-Fi first to scan"
-        ;;
-      *)
-        exit 0
-        ;;
+    *"Enable Wi-Fi"*)
+      nmcli radio wifi on
+      notify "Wi-Fi enabled, scanning..."
+      wait_for_wifi_ready || true
+      rescan
+      return 0
+      ;;
+    *"Rescan"*)
+      # Rescanning while wifi is off doesn't do much, but honour the ask:
+      # turn it on briefly? No — just re-prompt. User can hit Enable.
+      notify "Enable Wi-Fi first to scan"
+      ;;
+    *)
+      exit 0
+      ;;
     esac
   done
 }
@@ -176,18 +176,18 @@ main_menu() {
     [ -z "${chosen:-}" ] && exit 0
 
     case "$chosen" in
-      *"Disable Wi-Fi"*)
-        nmcli radio wifi off && notify "Wi-Fi disabled"
-        continue
-        ;;
-      *"Rescan"*)
-        notify "Rescanning..."
-        rescan
-        continue
-        ;;
-      *"Cancel"*)
-        exit 0
-        ;;
+    *"Disable Wi-Fi"*)
+      nmcli radio wifi off && notify "Wi-Fi disabled"
+      continue
+      ;;
+    *"Rescan"*)
+      notify "Rescanning..."
+      rescan
+      continue
+      ;;
+    *"Cancel"*)
+      exit 0
+      ;;
     esac
 
     local ssid current
@@ -210,7 +210,7 @@ main_menu() {
 
 # Kick off an initial scan if wifi is already on, so the first menu is fresh.
 if [ "$(nmcli -t -f WIFI radio)" = "enabled" ]; then
-  nmcli device wifi rescan >/dev/null 2>&1 || true
+  nmcli device wifi rescan >/dev/null 2>&1 &
 fi
 
 main_menu
