@@ -11,7 +11,10 @@ sudo apt-get upgrade -y
 sudo apt-get install -y \
   mpv \
   neofetch \
-  obs-studio
+  obs-studio \
+  texlive-full \
+  latexmk \
+  zathura
 
 GO_TARBALL="go1.26.4.linux-amd64.tar.gz"
 GO_URL="https://go.dev/dl/${GO_TARBALL}"
