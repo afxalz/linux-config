@@ -33,8 +33,16 @@ list_networks() {
   nmcli --terse --fields IN-USE,SSID,SECURITY,SIGNAL device wifi list --rescan no |
     awk -F: '$2 != "" {
         key=$2
+        if ($1 == "*") inuse[key] = 1
         if (!(key in seen) || $4+0 > sig[key]) { seen[key]=$0; sig[key]=$4+0 }
-      } END { for (k in seen) print seen[k] }' |
+      } END {
+        for (k in seen) {
+          n = split(seen[k], f, ":")
+          f[1] = (k in inuse) ? "*" : ""
+          line = f[1]; for (i = 2; i <= n; i++) line = line ":" f[i]
+          print line
+        }
+      }' |
     sort -t: -k4 -n |
     awk -F: '{
         sig = $4 + 0
@@ -78,16 +86,33 @@ connect_ssid() {
   local ssid="$1" security
 
   # Saved profile? Just bring it up.
-  if nmcli -t -f NAME connection show | grep -Fxq "$ssid"; then
-    if nmcli connection up "$ssid" >/dev/null 2>&1; then
+  local profile
+  profile=$(nmcli -t -f NAME,TYPE connection show |
+    awk -F: '$2=="802-11-wireless"{print $1}' |
+    while read -r name; do
+      psd=$(nmcli -t -f 802-11-wireless.ssid connection show "$name" 2>/dev/null | cut -d: -f2-)
+      [ "$psd" = "$ssid" ] && {
+        printf '%s' "$name"
+        break
+      }
+    done)
+
+  if [ -n "$profile" ]; then
+    if nmcli connection up "$profile" >/dev/null 2>&1; then
       notify "Connected to $ssid"
       return 0
     fi
-    # Fall through if stored creds failed.
+    # Fall through if bringing the saved profile up failed.
   fi
 
   security=$(nmcli --terse --fields SSID,SECURITY device wifi list |
     awk -F: -v s="$ssid" '$1 == s { print $2; exit }')
+
+  # Enterprise (802.1X, e.g. eduroam) can't be joined with a simple PSK prompt.
+  if printf '%s' "$security" | grep -q '802.1X'; then
+    notify "$ssid is enterprise (802.1X) — set up a saved profile first"
+    return 1
+  fi
 
   if [ -z "$security" ] || [ "$security" = "--" ]; then
     nmcli device wifi connect "$ssid" >/dev/null 2>&1 &&
