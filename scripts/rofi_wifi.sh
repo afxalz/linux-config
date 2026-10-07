@@ -30,7 +30,7 @@ rescan() {
 
 list_networks() {
   # Emit formatted rows sorted by signal ASCENDING (weakest first).
-  nmcli --terse --fields IN-USE,SSID,SECURITY,SIGNAL device wifi list |
+  nmcli --terse --fields IN-USE,SSID,SECURITY,SIGNAL device wifi list --rescan no |
     awk -F: '$2 != "" {
         key=$2
         if (!(key in seen) || $4+0 > sig[key]) { seen[key]=$0; sig[key]=$4+0 }
